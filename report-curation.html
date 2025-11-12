@@ -203,7 +203,7 @@
         /* Sticky toolbar */
         .toolbar {
             position: sticky;
-            top: 64px; /* Height of navbar */
+            top: 64px;
             background: white;
             border-bottom: 2px solid #e0e0e0;
             padding: 16px 32px;
@@ -642,21 +642,21 @@
         <div class="navbar-container">
             <a href="index.html" class="navbar-brand">
                 <div class="navbar-logo">V</div>
-                <span class="navbar-title">Vantage Tools</span>
+                <span class="navbar-title">Vantage</span>
             </a>
             
             <button class="navbar-toggle" id="navToggle">☰</button>
             
             <div class="navbar-menu" id="navMenu">
                 <a href="index.html" class="navbar-link">Dashboard</a>
-                <a href="script-generator.html" class="navbar-link">Script Generator</a>
                 <div class="navbar-dropdown">
-                    <button class="navbar-dropdown-toggle" id="reportsToggle">
-                        Reports ▾
+                    <button class="navbar-dropdown-toggle" id="toolsDropdown">
+                        Tools ▼
                     </button>
-                    <div class="navbar-dropdown-menu" id="reportsMenu">
-                        <a href="report-curation.html?report=defense-dispatch" class="navbar-dropdown-item">Defense Dispatch</a>
-                        <a href="report-curation.html?report=ai-watch" class="navbar-dropdown-item">AI Watch</a>
+                    <div class="navbar-dropdown-menu">
+                        <a href="script-generator.html" class="navbar-dropdown-item">📝 Script Generator</a>
+                        <a href="report-curation.html?report=defense-dispatch" class="navbar-dropdown-item">📰 Report Curation</a>
+                        <a href="brief-request.html" class="navbar-dropdown-item">📋 Brief Request</a>
                     </div>
                 </div>
             </div>
@@ -759,7 +759,7 @@
         
         const CONFIG = {
             timeout: 60000,
-            useMockData: true
+            useMockData: true  // Set to false when webhooks are ready
         };
         
         // Get report type from URL
@@ -791,8 +791,7 @@
         const statusMessage = document.getElementById('statusMessage');
         const navToggle = document.getElementById('navToggle');
         const navMenu = document.getElementById('navMenu');
-        const reportsToggle = document.getElementById('reportsToggle');
-        const reportsMenu = document.getElementById('reportsMenu');
+        const toolsDropdown = document.getElementById('toolsDropdown');
         
         // ============================================================================
         // INITIALIZATION
@@ -817,20 +816,20 @@
                 navMenu.classList.toggle('open');
             });
             
-            // Reports dropdown
-            reportsToggle.addEventListener('click', (e) => {
+            // Tools dropdown
+            toolsDropdown.addEventListener('click', (e) => {
                 e.stopPropagation();
-                reportsToggle.parentElement.classList.toggle('open');
+                toolsDropdown.parentElement.classList.toggle('open');
             });
             
             // Close dropdown when clicking outside
             document.addEventListener('click', () => {
-                reportsToggle.parentElement.classList.remove('open');
+                toolsDropdown.parentElement.classList.remove('open');
             });
         });
         
         // ============================================================================
-        // FETCH STORIES (keeping existing implementation)
+        // FETCH STORIES
         // ============================================================================
         
         async function fetchStories() {
@@ -864,9 +863,6 @@
                 showEmpty();
             }
         }
-        
-        // [REST OF THE JAVASCRIPT FROM DEFENSE-DISPATCH.HTML - renderStories, event handlers, etc.]
-        // I'll continue in the next part...
         
         function renderStories() {
             if (stories.length === 0) {
