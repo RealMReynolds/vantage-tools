@@ -18,6 +18,137 @@
             color: #222;
             background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
             min-height: 100vh;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 64px;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background: #c8202f;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+        }
+        
+        .navbar-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .navbar-link {
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .navbar-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .navbar-link.active {
+            background: #c8202f;
+            color: white;
+        }
+        
+        /* Dropdown */
+        .navbar-dropdown {
+            position: relative;
+        }
+        
+        .navbar-dropdown-toggle {
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.8);
+            background: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .navbar-dropdown-toggle:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .navbar-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 200px;
+            display: none;
+            overflow: hidden;
+        }
+        
+        .navbar-dropdown.open .navbar-dropdown-menu {
+            display: block;
+        }
+        
+        .navbar-dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s ease;
+        }
+        
+        .navbar-dropdown-item:hover {
+            background: #f5f5f5;
+        }
+        
+        /* Page wrapper */
+        .page-wrapper {
             padding: 20px;
         }
         
@@ -246,8 +377,35 @@
         
         /* Responsive */
         @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 0 0 20px 0;
+            }
+            
+            .navbar-container {
+                padding: 0 16px;
+            }
+            
+            .navbar-title {
+                font-size: 16px;
+            }
+            
+            .navbar-menu {
+                gap: 4px;
+            }
+            
+            .navbar-link {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+            
+            .container {
+                padding: 0 20px;
+            }
+            
             .header {
                 padding: 40px 24px;
+                border-radius: 0;
+                margin-bottom: 20px;
             }
             
             .header h1 {
@@ -268,6 +426,11 @@
             
             .info-section {
                 padding: 24px;
+                border-radius: 0;
+            }
+            
+            .footer {
+                border-radius: 0;
             }
         }
         
@@ -293,111 +456,156 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-content">
-                <h1>🎯 Vantage Tools</h1>
-                <div class="tagline">Automation Dashboard</div>
-                <div class="subtitle">Web interfaces for your automation workflows</div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">V</div>
+                <span class="navbar-title">Vantage</span>
+            </a>
+            <div class="navbar-menu">
+                <a href="index.html" class="navbar-link active">Dashboard</a>
+                <div class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" id="toolsDropdown">
+                        Tools ▼
+                    </button>
+                    <div class="navbar-dropdown-menu">
+                        <a href="script-generator.html" class="navbar-dropdown-item">📝 Script Generator</a>
+                        <a href="report-curation.html?report=defense-dispatch" class="navbar-dropdown-item">📰 Defense Dispatch</a>
+                        <a href="brief-request.html" class="navbar-dropdown-item">📋 Brief Request</a>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <!-- Tools Grid -->
-        <div class="tools-grid">
-            <!-- Script Generator -->
-            <a href="script-generator.html" class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">📝</div>
-                    <div>
-                        <div class="tool-title">Script Generator</div>
-                        <span class="tool-status status-live">Live</span>
-                    </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-content">
+                    <h1>🎯 Vantage Tools</h1>
+                    <div class="tagline">Automation Dashboard</div>
+                    <div class="subtitle">Web interfaces for your automation workflows</div>
                 </div>
-                <div class="tool-description">
-                    Generate professional scripts tailored to your needs. Specify length, tone, client, and context—receive a polished script in seconds.
-                </div>
-                <div class="tool-features">
-                    <ul>
-                        <li>Multiple length options (30s - 5min)</li>
-                        <li>6 tone presets</li>
-                        <li>One-click copy to clipboard</li>
-                        <li>Powered by AI automation</li>
-                    </ul>
-                </div>
-            </a>
+            </div>
             
-            <!-- Defense Dispatch -->
-            <a href="defense-dispatch.html" class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">📰</div>
-                    <div>
-                        <div class="tool-title">Defense Dispatch</div>
-                        <span class="tool-status status-testing">Testing</span>
+            <!-- Tools Grid -->
+            <div class="tools-grid">
+                <!-- Script Generator -->
+                <a href="script-generator.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-icon">📝</div>
+                        <div>
+                            <div class="tool-title">Script Generator</div>
+                            <span class="tool-status status-live">Live</span>
+                        </div>
                     </div>
-                </div>
-                <div class="tool-description">
-                    Curate your daily news readout with a clean checkbox interface. Select stories, generate reports, and send to your team—no spreadsheet required.
-                </div>
-                <div class="tool-features">
-                    <ul>
-                        <li>Visual story selection</li>
-                        <li>Real-time preview</li>
-                        <li>One-click report generation</li>
-                        <li>HTML email output</li>
-                    </ul>
-                </div>
-            </a>
+                    <div class="tool-description">
+                        Generate professional scripts tailored to your needs. Specify length, tone, client, and context—receive a polished script in seconds.
+                    </div>
+                    <div class="tool-features">
+                        <ul>
+                            <li>Multiple length options (30s - 5min)</li>
+                            <li>6 tone presets</li>
+                            <li>One-click copy to clipboard</li>
+                            <li>Powered by AI automation</li>
+                        </ul>
+                    </div>
+                </a>
+                
+                <!-- Report Curation -->
+                <a href="report-curation.html?report=defense-dispatch" class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-icon">📰</div>
+                        <div>
+                            <div class="tool-title">Report Curation</div>
+                            <span class="tool-status status-testing">Testing</span>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        Curate your daily news readouts with a clean checkbox interface. Select stories, generate reports, and send to your team—no spreadsheet required.
+                    </div>
+                    <div class="tool-features">
+                        <ul>
+                            <li>Visual story selection</li>
+                            <li>Real-time preview</li>
+                            <li>One-click report generation</li>
+                            <li>Multiple report types supported</li>
+                        </ul>
+                    </div>
+                </a>
+                
+                <!-- Brief Request Form -->
+                <a href="brief-request.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-icon">📋</div>
+                        <div>
+                            <div class="tool-title">Brief Request</div>
+                            <span class="tool-status status-coming">Coming Soon</span>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        Request custom research briefs from the team. Specify client, topic, sources, and deadline—get notified when your brief is ready.
+                    </div>
+                    <div class="tool-features">
+                        <ul>
+                            <li>Custom source input</li>
+                            <li>Deadline tracking</li>
+                            <li>Slack/email notifications</li>
+                            <li>Auto-routing to team</li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
             
-            <!-- Brief Request Form -->
-            <a href="brief-request.html" class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">📋</div>
-                    <div>
-                        <div class="tool-title">Brief Request</div>
-                        <span class="tool-status status-coming">Coming Soon</span>
-                    </div>
-                </div>
-                <div class="tool-description">
-                    Request custom research briefs from the team. Specify client, topic, sources, and deadline—get notified when your brief is ready.
-                </div>
-                <div class="tool-features">
-                    <ul>
-                        <li>Custom source input</li>
-                        <li>Deadline tracking</li>
-                        <li>Slack/email notifications</li>
-                        <li>Auto-routing to team</li>
-                    </ul>
-                </div>
-            </a>
-        </div>
-        
-        <!-- Info Section -->
-        <div class="info-section">
-            <h2>🔧 How It Works</h2>
-            <p>
-                These web interfaces connect to n8n automation workflows. 
-                Each tool sends data to a webhook endpoint, where n8n processes the request and returns results in real-time.
-            </p>
-            <p><strong>Key benefits:</strong></p>
-            <ul>
-                <li>No login required—just bookmark the page</li>
-                <li>Works on any device (desktop, tablet, phone)</li>
-                <li>Instant results via automation</li>
-                <li>Professional output every time</li>
-            </ul>
-            <p>
-                <strong>Technical:</strong> These pages are hosted on GitHub Pages and require no backend infrastructure. 
-                All processing happens in your existing n8n workflows.
-            </p>
-        </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <strong>Vantage Tools</strong> • Automation Dashboard<br>
-            Powered by <a href="https://n8n.io" target="_blank">n8n automation</a> • 
-            <a href="https://github.com/realmreynolds/vantage-tools" target="_blank">View on GitHub</a>
+            <!-- Info Section -->
+            <div class="info-section">
+                <h2>🔧 How It Works</h2>
+                <p>
+                    These web interfaces connect to n8n automation workflows. 
+                    Each tool sends data to a webhook endpoint, where n8n processes the request and returns results in real-time.
+                </p>
+                <p><strong>Key benefits:</strong></p>
+                <ul>
+                    <li>No login required—just bookmark the page</li>
+                    <li>Works on any device (desktop, tablet, phone)</li>
+                    <li>Instant results via automation</li>
+                    <li>Professional output every time</li>
+                </ul>
+                <p>
+                    <strong>Technical:</strong> These pages are hosted on GitHub Pages and require no backend infrastructure. 
+                    All processing happens in your existing n8n workflows.
+                </p>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <strong>Vantage Tools</strong> • Automation Dashboard<br>
+                Powered by <a href="https://n8n.io" target="_blank">n8n automation</a> • 
+                <a href="https://github.com/realmreynolds/vantage-tools" target="_blank">View on GitHub</a>
+            </div>
         </div>
     </div>
+
+    <script>
+        // ============================================================================
+        // NAVBAR FUNCTIONALITY
+        // ============================================================================
+        
+        // Dropdown toggle
+        const toolsDropdown = document.getElementById('toolsDropdown');
+        const dropdownParent = toolsDropdown.parentElement;
+        
+        toolsDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownParent.classList.toggle('open');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            dropdownParent.classList.remove('open');
+        });
+    </script>
 </body>
 </html>
