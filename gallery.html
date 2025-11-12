@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantage Gallery - Visual Asset Library</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .navbar-logo {
+            background: #c8202f;
+            color: white;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            border-radius: 4px;
+        }
+        
+        .navbar-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 0;
+            align-items: center;
+        }
+        
+        .navbar-link {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 20px 24px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            display: block;
+        }
+        
+        .navbar-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .navbar-link.active {
+            color: white;
+            border-bottom-color: #c8202f;
+        }
+        
+        /* Dropdown */
+        .navbar-dropdown {
+            position: relative;
+        }
+        
+        .navbar-dropdown-toggle {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            padding: 20px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .navbar-dropdown-toggle:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .navbar-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #2c2c2c;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .navbar-dropdown:hover .navbar-dropdown-menu {
+            display: block;
+        }
+        
+        .navbar-dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .navbar-dropdown-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .navbar-dropdown-item:hover {
+            background: rgba(200,32,47,0.2);
+            color: white;
+            padding-left: 24px;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            color: #666;
+        }
+        
+        /* Controls section */
+        .controls {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #c8202f;
+            box-shadow: 0 0 0 3px rgba(200,32,47,0.1);
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group select {
+            padding: 10px 16px;
+            font-size: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-group select:hover {
+            border-color: #c8202f;
+        }
+        
+        .filter-group select:focus {
+            outline: none;
+            border-color: #c8202f;
+            box-shadow: 0 0 0 3px rgba(200,32,47,0.1);
+        }
+        
+        .clear-btn {
+            padding: 10px 20px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .clear-btn:hover {
+            background: #555;
+        }
+        
+        /* Stats */
+        .stats {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .stats strong {
+            color: #c8202f;
+            font-size: 18px;
+        }
+        
+        /* Gallery grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        /* Asset card */
+        .asset-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .asset-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .asset-thumbnail {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: #f5f5f5;
+        }
+        
+        .asset-info {
+            padding: 16px;
+        }
+        
+        .asset-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .asset-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        
+        .meta-tag {
+            padding: 4px 10px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .meta-tag.client {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .meta-tag.type {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .asset-date {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        
+        .empty-state h3 {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .empty-state p {
+            color: #999;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            line-height: 1;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        
+        .modal-image {
+            width: 100%;
+            display: block;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .modal-details {
+            padding: 30px;
+        }
+        
+        .modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+        
+        .modal-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .meta-item {
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .meta-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #999;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .meta-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .modal-description {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 24px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #c8202f;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #a01825;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-wrap: wrap;
+            }
+            
+            .navbar-menu {
+                width: 100%;
+                justify-content: center;
+                margin-top: 8px;
+            }
+            
+            .navbar-link,
+            .navbar-dropdown-toggle {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-group select {
+                flex: 1;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 16px;
+            }
+            
+            .modal-content {
+                margin: 20px;
+            }
+            
+            .modal-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">V</div>
+                <span class="navbar-title">Vantage</span>
+            </a>
+            <div class="navbar-menu">
+                <a href="index.html" class="navbar-link">Dashboard</a>
+                <div class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" id="toolsDropdown">
+                        Tools ▼
+                    </button>
+                    <div class="navbar-dropdown-menu">
+                        <a href="script-generator.html" class="navbar-dropdown-item">📝 Script Generator</a>
+                        <a href="report-curation.html?report=defense-dispatch" class="navbar-dropdown-item">📰 Report Curation</a>
+                        <a href="gallery.html" class="navbar-dropdown-item">📸 Visual Gallery</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Page header -->
+        <div class="page-header">
+            <h1>📸 Visual Asset Library</h1>
+            <p>Browse and download approved graphics, templates, and creative assets</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="🔍 Search by title, client, or description..."
+                >
+            </div>
+            
+            <div class="filter-group">
+                <select id="clientFilter">
+                    <option value="">All Clients</option>
+                </select>
+                
+                <select id="typeFilter">
+                    <option value="">All Types</option>
+                </select>
+                
+                <select id="dateFilter">
+                    <option value="">All Dates</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            
+            <button class="clear-btn" onclick="clearFilters()">Clear Filters</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            Showing <strong id="resultCount">0</strong> of <strong id="totalCount">0</strong> assets
+        </div>
+
+        <!-- Gallery grid -->
+        <div id="galleryGrid" class="gallery-grid">
+            <!-- Cards will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Empty state -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <h3>No assets found</h3>
+            <p>Try adjusting your search or filters</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <div class="modal-details">
+                <h2 id="modalTitle" class="modal-title"></h2>
+                
+                <div class="modal-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Client</div>
+                        <div class="meta-value" id="modalClient"></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Asset Type</div>
+                        <div class="meta-value" id="modalType"></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Format</div>
+                        <div class="meta-value" id="modalFormat"></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Date</div>
+                        <div class="meta-value" id="modalDate"></div>
+                    </div>
+                </div>
+                
+                <p id="modalDescription" class="modal-description"></p>
+                
+                <div class="modal-actions">
+                    <a id="downloadBtn" class="btn btn-primary" download>
+                        ⬇️ Download Asset
+                    </a>
+                    <button class="btn btn-secondary" onclick="copyLink()">
+                        🔗 Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // ASSET DATA - UPDATE THIS SECTION WITH YOUR IMAGES
+        // ============================================================================
+        
+        const assets = [
+            {
+                id: 1,
+                title: "F-35 Lightning II Social Media Post",
+                client: "Lockheed Martin",
+                type: "Social Media",
+                format: "PNG",
+                date: "2024-10-15",
+                description: "High-resolution social media graphic featuring the F-35 Lightning II with dramatic sky background. Used in Q4 2024 product awareness campaign.",
+                image: "assets/gallery/sample1.jpg",
+                thumbnail: "assets/gallery/sample1.jpg"
+            },
+            {
+                id: 2,
+                title: "AI Workforce Impact Infographic",
+                client: "AIN",
+                type: "Infographic",
+                format: "PDF",
+                date: "2024-09-22",
+                description: "Comprehensive infographic showing AI's impact on workforce automation. Featured in September newsletter.",
+                image: "assets/gallery/sample2.jpg",
+                thumbnail: "assets/gallery/sample2.jpg"
+            },
+            {
+                id: 3,
+                title: "Defense Dispatch Header Template",
+                client: "Lockheed Martin",
+                type: "Template",
+                format: "PSD",
+                date: "2024-08-10",
+                description: "Reusable email header template for Defense Dispatch newsletter. Includes editable text layers and brand guidelines.",
+                image: "assets/gallery/sample3.jpg",
+                thumbnail: "assets/gallery/sample3.jpg"
+            },
+            {
+                id: 4,
+                title: "Cybersecurity Best Practices Presentation",
+                client: "Tech Coalition",
+                type: "Presentation",
+                format: "PPTX",
+                date: "2024-11-05",
+                description: "Professional slide deck covering cybersecurity best practices for enterprise clients. 24 slides with custom animations.",
+                image: "assets/gallery/sample4.jpg",
+                thumbnail: "assets/gallery/sample4.jpg"
+            },
+            {
+                id: 5,
+                title: "2024 Q3 Performance Report Cover",
+                client: "Lockheed Martin",
+                type: "Print",
+                format: "PDF",
+                date: "2024-09-30",
+                description: "Print-ready cover design for Q3 performance report. Features bold typography and company branding.",
+                image: "assets/gallery/sample5.jpg",
+                thumbnail: "assets/gallery/sample5.jpg"
+            },
+            {
+                id: 6,
+                title: "AI Innovation Web Banner",
+                client: "AIN",
+                type: "Web Graphics",
+                format: "PNG",
+                date: "2024-10-20",
+                description: "Hero banner for AIN website homepage. Dimensions: 1920x600px. Features gradient overlay and call-to-action button space.",
+                image: "assets/gallery/sample6.jpg",
+                thumbnail: "assets/gallery/sample6.jpg"
+            },
+            {
+                id: 7,
+                title: "Social Media Carousel - Tech Policy",
+                client: "Tech Coalition",
+                type: "Social Media",
+                format: "PNG",
+                date: "2024-11-01",
+                description: "10-slide Instagram carousel explaining new tech policy initiatives. Designed for mobile-first viewing.",
+                image: "assets/gallery/sample7.jpg",
+                thumbnail: "assets/gallery/sample7.jpg"
+            },
+            {
+                id: 8,
+                title: "Missile Defense System Diagram",
+                client: "Lockheed Martin",
+                type: "Infographic",
+                format: "SVG",
+                date: "2024-09-15",
+                description: "Technical diagram showing missile defense system architecture. Vector format allows infinite scaling.",
+                image: "assets/gallery/sample8.jpg",
+                thumbnail: "assets/gallery/sample8.jpg"
+            },
+            {
+                id: 9,
+                title: "Event Invitation - AI Summit 2024",
+                client: "AIN",
+                type: "Print",
+                format: "PDF",
+                date: "2024-08-25",
+                description: "Formal invitation design for annual AI Summit. Print specifications: 5x7 inches, CMYK color mode.",
+                image: "assets/gallery/sample9.jpg",
+                thumbnail: "assets/gallery/sample9.jpg"
+            },
+            {
+                id: 10,
+                title: "LinkedIn Post Template Pack",
+                client: "Tech Coalition",
+                type: "Template",
+                format: "Figma",
+                date: "2024-10-10",
+                description: "Collection of 15 LinkedIn post templates with consistent branding. Includes quote cards, statistic callouts, and announcement formats.",
+                image: "assets/gallery/sample10.jpg",
+                thumbnail: "assets/gallery/sample10.jpg"
+            },
+            {
+                id: 11,
+                title: "Annual Report Infographic Spread",
+                client: "Lockheed Martin",
+                type: "Infographic",
+                format: "PDF",
+                date: "2024-09-05",
+                description: "Two-page spread featuring key metrics and achievements. Designed for 2024 annual report publication.",
+                image: "assets/gallery/sample11.jpg",
+                thumbnail: "assets/gallery/sample11.jpg"
+            },
+            {
+                id: 12,
+                title: "Webinar Registration Landing Page",
+                client: "AIN",
+                type: "Web Graphics",
+                format: "HTML",
+                date: "2024-10-28",
+                description: "Complete landing page design for webinar registration. Includes hero image, form layout, and responsive breakpoints.",
+                image: "assets/gallery/sample12.jpg",
+                thumbnail: "assets/gallery/sample12.jpg"
+            },
+            {
+                id: 13,
+                title: "Twitter/X Thread Graphics Set",
+                client: "Tech Coalition",
+                type: "Social Media",
+                format: "PNG",
+                date: "2024-11-03",
+                description: "Series of 8 graphics designed for Twitter/X thread about tech legislation. Optimized for 1200x675px.",
+                image: "assets/gallery/sample13.jpg",
+                thumbnail: "assets/gallery/sample13.jpg"
+            },
+            {
+                id: 14,
+                title: "Product Launch Video Thumbnail",
+                client: "Lockheed Martin",
+                type: "Social Media",
+                format: "JPG",
+                date: "2024-09-18",
+                description: "Eye-catching YouTube thumbnail for product launch video. High contrast design optimized for small displays.",
+                image: "assets/gallery/sample14.jpg",
+                thumbnail: "assets/gallery/sample14.jpg"
+            },
+            {
+                id: 15,
+                title: "Email Newsletter Template - Modern",
+                client: "AIN",
+                type: "Template",
+                format: "HTML",
+                date: "2024-10-12",
+                description: "Responsive HTML email template with modular sections. Compatible with major email clients including Outlook.",
+                image: "assets/gallery/sample15.jpg",
+                thumbnail: "assets/gallery/sample15.jpg"
+            }
+        ];
+
+        // ============================================================================
+        // APPLICATION LOGIC
+        // ============================================================================
+        
+        let filteredAssets = [...assets];
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            populateFilters();
+            renderGallery();
+            setupEventListeners();
+        });
+        
+        // Populate filter dropdowns with unique values
+        function populateFilters() {
+            const clients = [...new Set(assets.map(a => a.client))].sort();
+            const types = [...new Set(assets.map(a => a.type))].sort();
+            
+            const clientFilter = document.getElementById('clientFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            
+            clients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client;
+                option.textContent = client;
+                clientFilter.appendChild(option);
+            });
+            
+            types.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                typeFilter.appendChild(option);
+            });
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            document.getElementById('clientFilter').addEventListener('change', applyFilters);
+            document.getElementById('typeFilter').addEventListener('change', applyFilters);
+            document.getElementById('dateFilter').addEventListener('change', applyFilters);
+            
+            // Close modal on background click
+            document.getElementById('modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+            
+            // Close modal on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+        
+        // Apply all filters
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const clientFilter = document.getElementById('clientFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            
+            filteredAssets = assets.filter(asset => {
+                const matchesSearch = !searchTerm || 
+                    asset.title.toLowerCase().includes(searchTerm) ||
+                    asset.client.toLowerCase().includes(searchTerm) ||
+                    asset.description.toLowerCase().includes(searchTerm) ||
+                    asset.type.toLowerCase().includes(searchTerm);
+                
+                const matchesClient = !clientFilter || asset.client === clientFilter;
+                const matchesType = !typeFilter || asset.type === typeFilter;
+                const matchesDate = !dateFilter || asset.date.startsWith(dateFilter);
+                
+                return matchesSearch && matchesClient && matchesType && matchesDate;
+            });
+            
+            renderGallery();
+        }
+        
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clientFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            applyFilters();
+        }
+        
+        // Render gallery cards
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Update counts
+            document.getElementById('resultCount').textContent = filteredAssets.length;
+            document.getElementById('totalCount').textContent = assets.length;
+            
+            if (filteredAssets.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            grid.innerHTML = '';
+            
+            filteredAssets.forEach(asset => {
+                const card = createAssetCard(asset);
+                grid.appendChild(card);
+            });
+        }
+        
+        // Create individual asset card
+        function createAssetCard(asset) {
+            const card = document.createElement('div');
+            card.className = 'asset-card';
+            card.onclick = () => openModal(asset);
+            
+            card.innerHTML = `
+                <img src="${asset.thumbnail}" alt="${asset.title}" class="asset-thumbnail">
+                <div class="asset-info">
+                    <div class="asset-title">${asset.title}</div>
+                    <div class="asset-meta">
+                        <span class="meta-tag client">${asset.client}</span>
+                        <span class="meta-tag type">${asset.type}</span>
+                        <span class="meta-tag">${asset.format}</span>
+                    </div>
+                    <div class="asset-date">${formatDate(asset.date)}</div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // Open modal with asset details
+        function openModal(asset) {
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('modalImage').src = asset.image;
+            document.getElementById('modalTitle').textContent = asset.title;
+            document.getElementById('modalClient').textContent = asset.client;
+            document.getElementById('modalType').textContent = asset.type;
+            document.getElementById('modalFormat').textContent = asset.format;
+            document.getElementById('modalDate').textContent = formatDate(asset.date);
+            document.getElementById('modalDescription').textContent = asset.description;
+            
+            const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.href = asset.image;
+            downloadBtn.download = `${asset.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.${asset.format.toLowerCase()}`;
+            
+            // Store current asset for link copying
+            window.currentAsset = asset;
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Copy asset link to clipboard
+        function copyLink() {
+            const asset = window.currentAsset;
+            const link = `${window.location.origin}${window.location.pathname}?asset=${asset.id}`;
+            
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const input = document.createElement('input');
+                input.value = link;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                alert('Link copied to clipboard!');
+            });
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Check for asset ID in URL on load
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const assetId = urlParams.get('asset');
+            
+            if (assetId) {
+                const asset = assets.find(a => a.id == assetId);
+                if (asset) {
+                    setTimeout(() => openModal(asset), 500);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
