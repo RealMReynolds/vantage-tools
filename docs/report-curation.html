@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Curation - Vantage Tools</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background-color: #f5f5f5;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 64px;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background: #c8202f;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+        }
+        
+        .navbar-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .navbar-link {
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .navbar-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .navbar-link.active {
+            background: #c8202f;
+            color: white;
+        }
+        
+        /* Dropdown */
+        .navbar-dropdown {
+            position: relative;
+        }
+        
+        .navbar-dropdown-toggle {
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.8);
+            background: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .navbar-dropdown-toggle:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .navbar-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 200px;
+            display: none;
+            overflow: hidden;
+        }
+        
+        .navbar-dropdown.open .navbar-dropdown-menu {
+            display: block;
+        }
+        
+        .navbar-dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s ease;
+        }
+        
+        .navbar-dropdown-item:hover {
+            background: #f5f5f5;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            padding: 48px 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.02) 10px, rgba(255,255,255,.02) 20px),
+                repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,.02) 10px, rgba(255,255,255,.02) 20px);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .header h1 {
+            color: #fff;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header .tagline {
+            color: #e74c3c;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        /* Sticky toolbar */
+        .toolbar {
+            position: sticky;
+            top: 64px;
+            background: white;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .selection-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .selection-count {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .selection-count .count {
+            color: #c8202f;
+            font-size: 20px;
+        }
+        
+        .toolbar-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #c8202f 0%, #a01825 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(200, 32, 47, 0.2);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(200, 32, 47, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Content area */
+        .content {
+            padding: 32px;
+        }
+        
+        /* Loading state */
+        .loading-state {
+            text-align: center;
+            padding: 60px 32px;
+            color: #666;
+        }
+        
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #f0f0f0;
+            border-top-color: #c8202f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 32px;
+            color: #666;
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        /* Section header */
+        .section {
+            margin-bottom: 32px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #c8202f 0%, #a01825 100%);
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+        
+        .section-icon {
+            font-size: 20px;
+        }
+        
+        .section-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            flex: 1;
+        }
+        
+        .section-count {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        
+        /* Story card */
+        .story-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .story-card:hover {
+            border-color: #c8202f;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .story-card.selected {
+            border-color: #c8202f;
+            background: #fff9f8;
+        }
+        
+        .story-card-content {
+            display: flex;
+            gap: 16px;
+        }
+        
+        /* Checkbox */
+        .story-checkbox-wrapper {
+            padding-top: 4px;
+        }
+        
+        .story-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #c8202f;
+        }
+        
+        /* Story details */
+        .story-details {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .story-headline {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1c1c1c;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        
+        .story-summary {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .story-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 12px;
+        }
+        
+        .story-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .prominence-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .prominence-high {
+            background: #fff5f5;
+            color: #c53030;
+        }
+        
+        .prominence-medium {
+            background: #fffbeb;
+            color: #b45309;
+        }
+        
+        .prominence-low {
+            background: #f0f0f0;
+            color: #666;
+        }
+        
+        /* Sources */
+        .story-sources {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .source-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            color: #666;
+            font-size: 11px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .source-tag:hover {
+            background: #c8202f;
+            color: white;
+            border-color: #c8202f;
+        }
+        
+        /* Status messages */
+        .status-message {
+            padding: 16px;
+            border-radius: 6px;
+            margin: 16px 32px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .status-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .status-message.error {
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            color: #c53030;
+        }
+        
+        .status-message.success {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            color: #276749;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .footer a {
+            color: #c8202f;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Mobile menu toggle */
+        .navbar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+            
+            .navbar-container {
+                padding: 0 16px;
+            }
+            
+            .navbar-toggle {
+                display: block;
+            }
+            
+            .navbar-menu {
+                display: none;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: #1a1a1a;
+                flex-direction: column;
+                padding: 16px;
+                gap: 8px;
+            }
+            
+            .navbar-menu.open {
+                display: flex;
+            }
+            
+            .navbar-link {
+                width: 100%;
+                text-align: left;
+            }
+            
+            .container {
+                border-radius: 0;
+                margin: 0;
+            }
+            
+            .header {
+                padding: 32px 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+                padding: 16px 20px;
+                top: 64px;
+            }
+            
+            .toolbar-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .story-card {
+                padding: 16px;
+            }
+            
+            .story-card-content {
+                flex-direction: column;
+            }
+            
+            .story-checkbox-wrapper {
+                display: flex;
+                align-items: center;
+            }
+            
+            .story-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">V</div>
+                <span class="navbar-title">Vantage</span>
+            </a>
+            
+            <button class="navbar-toggle" id="navToggle">☰</button>
+            
+            <div class="navbar-menu" id="navMenu">
+                <a href="index.html" class="navbar-link">Dashboard</a>
+                <div class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" id="toolsDropdown">
+                        Tools ▼
+                    </button>
+                    <div class="navbar-dropdown-menu">
+                        <a href="script-generator.html" class="navbar-dropdown-item">📝 Script Generator</a>
+                        <a href="report-curation.html?report=defense-dispatch" class="navbar-dropdown-item">📰 Report Curation</a>
+                        <a href="brief-request.html" class="navbar-dropdown-item">📋 Brief Request</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-icon" id="reportIcon">📰</div>
+                <h1 id="reportTitle">Report Curation</h1>
+                <div class="tagline" id="reportTagline">Loading...</div>
+            </div>
+        </div>
+        
+        <!-- Sticky Toolbar -->
+        <div class="toolbar">
+            <div class="selection-info">
+                <div class="selection-count">
+                    <span class="count" id="selectedCount">0</span> stories selected
+                </div>
+            </div>
+            <div class="toolbar-actions">
+                <button class="btn btn-secondary" id="selectAllBtn">Select All</button>
+                <button class="btn btn-secondary" id="clearAllBtn">Clear All</button>
+                <button class="btn btn-primary" id="generateBtn" disabled>
+                    Generate Report
+                </button>
+            </div>
+        </div>
+        
+        <!-- Status Message -->
+        <div id="statusMessage" class="status-message"></div>
+        
+        <!-- Content Area -->
+        <div class="content" id="contentArea">
+            <!-- Loading State -->
+            <div class="loading-state" id="loadingState">
+                <div class="loading-spinner"></div>
+                <div>Loading stories...</div>
+            </div>
+            
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">📭</div>
+                <h3>No Stories Available</h3>
+                <p>There are no stories to curate at the moment.</p>
+            </div>
+            
+            <!-- Stories will be inserted here -->
+            <div id="storiesContainer"></div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <strong>Vantage Report Curation</strong> • Powered by n8n automation<br>
+            <a href="index.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // REPORT CONFIGURATIONS
+        // ============================================================================
+        
+        const REPORT_CONFIGS = {
+            'defense-dispatch': {
+                title: 'Defense Dispatch',
+                icon: '🛡️',
+                tagline: 'Lockheed Martin & Defense Industry News',
+                sections: [
+                    { name: 'Defense Policy', icon: '📋' },
+                    { name: 'Lockheed Martin', icon: '✈️' },
+                    { name: 'Industry Updates', icon: '🏭' },
+                    { name: 'Contract Awards', icon: '💼' },
+                    { name: 'Client Flags', icon: '🎯' }
+                ],
+                fetchUrl: 'https://your-n8n.app.n8n.cloud/webhook/defense-dispatch-stories',
+                generateUrl: 'https://your-n8n.app.n8n.cloud/webhook/defense-dispatch-generate'
+            },
+            'ai-watch': {
+                title: 'AI Watch',
+                icon: '🤖',
+                tagline: 'Daily AI News Curation',
+                sections: [
+                    { name: 'Right-Leaning', icon: '🔴' },
+                    { name: 'Left-Leaning', icon: '🔵' },
+                    { name: 'Tech Industry', icon: '💻' },
+                    { name: 'Client Flags', icon: '🎯' }
+                ],
+                fetchUrl: 'https://your-n8n.app.n8n.cloud/webhook/ai-watch-stories',
+                generateUrl: 'https://your-n8n.app.n8n.cloud/webhook/ai-watch-generate'
+            }
+        };
+        
+        // ============================================================================
+        // CONFIGURATION
+        // ============================================================================
+        
+        const CONFIG = {
+            timeout: 60000,
+            useMockData: true  // Set to false when webhooks are ready
+        };
+        
+        // Get report type from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const reportType = urlParams.get('report') || 'defense-dispatch';
+        const currentConfig = REPORT_CONFIGS[reportType];
+        
+        // ============================================================================
+        // STATE MANAGEMENT
+        // ============================================================================
+        
+        let stories = [];
+        let selectedStories = new Set();
+        
+        // ============================================================================
+        // DOM ELEMENTS
+        // ============================================================================
+        
+        const reportIcon = document.getElementById('reportIcon');
+        const reportTitle = document.getElementById('reportTitle');
+        const reportTagline = document.getElementById('reportTagline');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const storiesContainer = document.getElementById('storiesContainer');
+        const selectedCountEl = document.getElementById('selectedCount');
+        const selectAllBtn = document.getElementById('selectAllBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        const toolsDropdown = document.getElementById('toolsDropdown');
+        
+        // ============================================================================
+        // INITIALIZATION
+        // ============================================================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set report branding
+            reportIcon.textContent = currentConfig.icon;
+            reportTitle.textContent = currentConfig.title;
+            reportTagline.textContent = currentConfig.tagline;
+            
+            // Fetch stories
+            fetchStories();
+            
+            // Event listeners
+            selectAllBtn.addEventListener('click', selectAll);
+            clearAllBtn.addEventListener('click', clearAll);
+            generateBtn.addEventListener('click', generateReport);
+            
+            // Mobile menu toggle
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('open');
+            });
+            
+            // Tools dropdown
+            toolsDropdown.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toolsDropdown.parentElement.classList.toggle('open');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', () => {
+                toolsDropdown.parentElement.classList.remove('open');
+            });
+        });
+        
+        // ============================================================================
+        // FETCH STORIES
+        // ============================================================================
+        
+        async function fetchStories() {
+            try {
+                showLoading();
+                
+                let data;
+                if (CONFIG.useMockData) {
+                    data = getMockStories(reportType);
+                } else {
+                    const response = await fetch(currentConfig.fetchUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch stories: ${response.status}`);
+                    }
+                    
+                    data = await response.json();
+                }
+                
+                stories = data.stories || data || [];
+                renderStories();
+                
+            } catch (error) {
+                console.error('Error fetching stories:', error);
+                showStatus(`Error loading stories: ${error.message}`, 'error');
+                showEmpty();
+            }
+        }
+        
+        function renderStories() {
+            if (stories.length === 0) {
+                showEmpty();
+                return;
+            }
+            
+            // Group stories by section using current config
+            const sections = {};
+            currentConfig.sections.forEach(sec => {
+                sections[sec.name] = [];
+            });
+            
+            stories.forEach(story => {
+                const section = story.section || currentConfig.sections[0].name;
+                if (sections[section]) {
+                    sections[section].push(story);
+                }
+            });
+            
+            // Build HTML
+            let html = '';
+            
+            Object.entries(sections).forEach(([sectionName, sectionStories]) => {
+                if (sectionStories.length === 0) return;
+                
+                const sectionConfig = currentConfig.sections.find(s => s.name === sectionName);
+                const icon = sectionConfig ? sectionConfig.icon : '📄';
+                
+                html += `
+                    <div class="section">
+                        <div class="section-header">
+                            <span class="section-icon">${icon}</span>
+                            <span class="section-title">${sectionName}</span>
+                            <span class="section-count">${sectionStories.length}</span>
+                        </div>
+                `;
+                
+                sectionStories.forEach(story => {
+                    html += renderStoryCard(story);
+                });
+                
+                html += `</div>`;
+            });
+            
+            storiesContainer.innerHTML = html;
+            hideLoading();
+            
+            attachStoryListeners();
+        }
+        
+        function renderStoryCard(story) {
+            const isSelected = selectedStories.has(story.storyId);
+            
+            let html = `
+                <div class="story-card ${isSelected ? 'selected' : ''}" data-story-id="${story.storyId}">
+                    <div class="story-card-content">
+                        <div class="story-checkbox-wrapper">
+                            <input type="checkbox" 
+                                   class="story-checkbox" 
+                                   data-story-id="${story.storyId}"
+                                   ${isSelected ? 'checked' : ''}>
+                        </div>
+                        <div class="story-details">
+                            <div class="story-headline">${sanitizeHtml(story.headline)}</div>
+            `;
+            
+            if (story.summary) {
+                html += `<div class="story-summary">${sanitizeHtml(story.summary)}</div>`;
+            }
+            
+            html += `<div class="story-meta">`;
+            
+            if (story.timestamp) {
+                html += `<span class="story-meta-item">🕐 ${formatTime(story.timestamp)}</span>`;
+            }
+            
+            if (story.prominence) {
+                const prominenceClass = `prominence-${story.prominence.toLowerCase()}`;
+                html += `<span class="story-meta-item"><span class="prominence-badge ${prominenceClass}">${story.prominence}</span></span>`;
+            }
+            
+            html += `</div>`;
+            
+            if (story.sources && story.sources.length > 0) {
+                html += `<div class="story-sources">`;
+                story.sources.forEach(source => {
+                    if (typeof source === 'string' && source.startsWith('http')) {
+                        const domain = extractDomain(source);
+                        html += `<a href="${source}" class="source-tag" target="_blank" onclick="event.stopPropagation()">${domain}</a>`;
+                    } else if (typeof source === 'string') {
+                        html += `<span class="source-tag">${source}</span>`;
+                    }
+                });
+                html += `</div>`;
+            }
+            
+            html += `
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+        
+        function attachStoryListeners() {
+            document.querySelectorAll('.story-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    const storyId = e.target.dataset.storyId;
+                    toggleStory(storyId, e.target.checked);
+                });
+            });
+            
+            document.querySelectorAll('.story-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('source-tag')) return;
+                    
+                    const storyId = card.dataset.storyId;
+                    const checkbox = card.querySelector('.story-checkbox');
+                    checkbox.checked = !checkbox.checked;
+                    toggleStory(storyId, checkbox.checked);
+                });
+            });
+        }
+        
+        function toggleStory(storyId, selected) {
+            const card = document.querySelector(`[data-story-id="${storyId}"]`);
+            
+            if (selected) {
+                selectedStories.add(storyId);
+                card.classList.add('selected');
+            } else {
+                selectedStories.delete(storyId);
+                card.classList.remove('selected');
+            }
+            
+            updateSelectionCount();
+        }
+        
+        function selectAll() {
+            stories.forEach(story => {
+                selectedStories.add(story.storyId);
+            });
+            
+            document.querySelectorAll('.story-checkbox').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            
+            document.querySelectorAll('.story-card').forEach(card => {
+                card.classList.add('selected');
+            });
+            
+            updateSelectionCount();
+        }
+        
+        function clearAll() {
+            selectedStories.clear();
+            
+            document.querySelectorAll('.story-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            document.querySelectorAll('.story-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            updateSelectionCount();
+        }
+        
+        function updateSelectionCount() {
+            const count = selectedStories.size;
+            selectedCountEl.textContent = count;
+            generateBtn.disabled = count === 0;
+        }
+        
+        async function generateReport() {
+            if (selectedStories.size === 0) return;
+            
+            const selectedStoryObjects = stories.filter(s => selectedStories.has(s.storyId));
+            
+            try {
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<span class="spinner"></span> Generating...';
+                hideStatus();
+                
+                const payload = {
+                    timestamp: new Date().toISOString(),
+                    totalStories: selectedStoryObjects.length,
+                    selectedStories: selectedStoryObjects
+                };
+                
+                if (CONFIG.useMockData) {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    showStatus(`Success! ${currentConfig.title} report generated with ${selectedStoryObjects.length} stories.`, 'success');
+                } else {
+                    const response = await fetch(currentConfig.generateUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload),
+                        keepalive: true
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Webhook returned status ${response.status}`);
+                    }
+                    
+                    showStatus(`Success! Report generated with ${selectedStoryObjects.length} stories. Check your email!`, 'success');
+                }
+                
+            } catch (error) {
+                console.error('Error generating report:', error);
+                showStatus(`Error generating report: ${error.message}`, 'error');
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate Report';
+            }
+        }
+        
+        // Utility functions
+        function sanitizeHtml(str) {
+            if (!str || typeof str !== 'string') return '';
+            
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(str, 'text/html');
+                return doc.body.textContent || '';
+            } catch (e) {
+                return str.replace(/(<([^>]+)>)/gi, '');
+            }
+        }
+        
+        function showLoading() {
+            loadingState.style.display = 'block';
+            emptyState.style.display = 'none';
+            storiesContainer.innerHTML = '';
+        }
+        
+        function hideLoading() {
+            loadingState.style.display = 'none';
+        }
+        
+        function showEmpty() {
+            loadingState.style.display = 'none';
+            emptyState.style.display = 'block';
+            storiesContainer.innerHTML = '';
+        }
+        
+        function showStatus(message, type = 'error') {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type} show`;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    hideStatus();
+                }, 5000);
+            }
+        }
+        
+        function hideStatus() {
+            statusMessage.classList.remove('show');
+        }
+        
+        function extractDomain(url) {
+            try {
+                const urlObj = new URL(url);
+                return urlObj.hostname.replace('www.', '');
+            } catch (e) {
+                return url;
+            }
+        }
+        
+        function formatTime(timestamp) {
+            if (!timestamp) return '';
+            
+            try {
+                if (typeof timestamp === 'string' && timestamp.includes(':')) {
+                    return timestamp;
+                }
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            } catch (e) {
+                return timestamp;
+            }
+        }
+        
+        // Mock data generator
+        function getMockStories(reportType) {
+            if (reportType === 'defense-dispatch') {
+                return {
+                    stories: [
+                        {
+                            storyId: 'story-1',
+                            section: 'Lockheed Martin',
+                            headline: 'Lockheed Martin Wins $1.2B F-35 Sustainment Contract',
+                            summary: 'The Pentagon awarded Lockheed Martin a major contract for F-35 maintenance and support services.',
+                            sources: ['https://defense.gov', 'https://janes.com'],
+                            prominence: 'High',
+                            timestamp: '2 hours ago'
+                        },
+                        {
+                            storyId: 'story-2',
+                            section: 'Defense Policy',
+                            headline: 'Senate Armed Services Committee Approves FY2026 NDAA',
+                            summary: 'The committee voted 25-2 to advance the defense authorization bill with increased funding.',
+                            sources: ['https://congress.gov', 'https://defensenews.com'],
+                            prominence: 'High',
+                            timestamp: '4 hours ago'
+                        },
+                        {
+                            storyId: 'story-3',
+                            section: 'Contract Awards',
+                            headline: 'Navy Awards $800M Radar Modernization Contract',
+                            summary: 'Multiple defense contractors will compete for radar upgrade work.',
+                            sources: ['https://navy.mil'],
+                            prominence: 'Medium',
+                            timestamp: '1 hour ago'
+                        }
+                    ]
+                };
+            } else {
+                // AI Watch mock data
+                return {
+                    stories: [
+                        {
+                            storyId: 'ai-1',
+                            section: 'Tech Industry',
+                            headline: 'OpenAI Releases GPT-5 with Enhanced Reasoning',
+                            summary: 'The new model shows significant improvements in complex problem-solving.',
+                            sources: ['https://techcrunch.com', 'https://theverge.com'],
+                            prominence: 'High',
+                            timestamp: '1 hour ago'
+                        }
+                    ]
+                };
+            }
+        }
+    </script>
+</body>
+</html>

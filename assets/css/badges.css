@@ -1,0 +1,5 @@
+.tool-status{display:inline-block;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.status-live{background:#d4edda;color:#155724}
+.status-testing{background:#fff3cd;color:#856404}
+.status-coming{background:#e2e3e5;color:#383d41}
+@keyframes spin{to{transform:rotate(360deg)}} .spin{display:inline-block;animation:spin .8s linear infinite;transform-origin:50% 50%}
