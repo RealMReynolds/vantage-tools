@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vantage Script Generator</title>
+    <title>Script Generator - Vantage Tools</title>
     <style>
         /* Reset and base styles */
         * {
@@ -17,6 +17,137 @@
             line-height: 1.6;
             color: #222;
             background-color: #f5f5f5;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 64px;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background: #c8202f;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+        }
+        
+        .navbar-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .navbar-link {
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .navbar-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .navbar-link.active {
+            background: #c8202f;
+            color: white;
+        }
+        
+        /* Dropdown */
+        .navbar-dropdown {
+            position: relative;
+        }
+        
+        .navbar-dropdown-toggle {
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.8);
+            background: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .navbar-dropdown-toggle:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .navbar-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 200px;
+            display: none;
+            overflow: hidden;
+        }
+        
+        .navbar-dropdown.open .navbar-dropdown-menu {
+            display: block;
+        }
+        
+        .navbar-dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s ease;
+        }
+        
+        .navbar-dropdown-item:hover {
+            background: #f5f5f5;
+        }
+        
+        /* Page wrapper */
+        .page-wrapper {
             padding: 20px;
         }
         
@@ -301,8 +432,25 @@
         
         /* Responsive */
         @media (max-width: 600px) {
-            body {
+            .page-wrapper {
                 padding: 0;
+            }
+            
+            .navbar-container {
+                padding: 0 16px;
+            }
+            
+            .navbar-title {
+                font-size: 16px;
+            }
+            
+            .navbar-menu {
+                gap: 4px;
+            }
+            
+            .navbar-link {
+                padding: 6px 12px;
+                font-size: 13px;
             }
             
             .container {
@@ -335,102 +483,127 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>📝 Script Generator</h1>
-            <div class="tagline">Powered by Vantage</div>
-        </div>
-        
-        <!-- Form Section -->
-        <div class="form-section">
-            <div class="form-intro">
-                <p><strong>Generate scripts for any occasion.</strong> Fill out the form below and we'll create a professional script tailored to your needs.</p>
-            </div>
-            
-            <form id="scriptForm">
-                <!-- Script Length -->
-                <div class="form-group">
-                    <label for="length">
-                        Script Length <span class="required">*</span>
-                    </label>
-                    <select id="length" name="length" required>
-                        <option value="">Select duration...</option>
-                        <option value="30s">30 seconds</option>
-                        <option value="60s">1 minute</option>
-                        <option value="90s">90 seconds</option>
-                        <option value="2min">2 minutes</option>
-                        <option value="3min">3 minutes</option>
-                        <option value="5min">5 minutes</option>
-                    </select>
-                </div>
-                
-                <!-- Tone -->
-                <div class="form-group">
-                    <label for="tone">
-                        Tone <span class="required">*</span>
-                    </label>
-                    <select id="tone" name="tone" required>
-                        <option value="">Select tone...</option>
-                        <option value="professional">Professional</option>
-                        <option value="conversational">Conversational</option>
-                        <option value="authoritative">Authoritative</option>
-                        <option value="empathetic">Empathetic</option>
-                        <option value="urgent">Urgent</option>
-                        <option value="inspirational">Inspirational</option>
-                    </select>
-                </div>
-                
-                <!-- Client -->
-                <div class="form-group">
-                    <label for="client">
-                        Client <span class="required">*</span>
-                    </label>
-                    <select id="client" name="client" required>
-                        <option value="">Select client...</option>
-                        <option value="AIN">AIN</option>
-                        <option value="Tech Coalition">Tech Coalition</option>
-                        <option value="Internal">Internal / Targeted Victory</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                
-                <!-- Context -->
-                <div class="form-group">
-                    <label for="context">
-                        Context / Key Points <span class="required">*</span>
-                    </label>
-                    <textarea id="context" name="context" required placeholder="Describe what the script should cover. Include key messages, talking points, audience details, or any specific requirements..."></textarea>
-                    <div class="helper-text">
-                        The more detail you provide, the better the script will be. Include audience, purpose, key messages, etc.
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">V</div>
+                <span class="navbar-title">Vantage</span>
+            </a>
+            <div class="navbar-menu">
+                <a href="index.html" class="navbar-link">Dashboard</a>
+                <div class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" id="toolsDropdown">
+                        Tools ▼
+                    </button>
+                    <div class="navbar-dropdown-menu">
+                        <a href="script-generator.html" class="navbar-dropdown-item">📝 Script Generator</a>
+                        <a href="defense-dispatch.html" class="navbar-dropdown-item">📰 Defense Dispatch</a>
+                        <a href="brief-request.html" class="navbar-dropdown-item">📋 Brief Request</a>
                     </div>
                 </div>
-                
-                <!-- Submit Button -->
-                <div class="submit-section">
-                    <button type="submit" class="btn-generate" id="generateBtn">
-                        Generate Script
-                    </button>
-                </div>
-            </form>
-            
-            <!-- Status Message -->
-            <div id="statusMessage" class="status-message"></div>
-        </div>
-        
-        <!-- Results Section -->
-        <div class="results-section" id="resultsSection">
-            <div class="results-header">
-                <h2>✅ Your Script</h2>
-                <button class="btn-copy" id="copyBtn">Copy to Clipboard</button>
             </div>
-            <div class="script-output" id="scriptOutput"></div>
         </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <strong>Vantage Script Generator</strong> • Powered by n8n automation<br>
-            <a href="index.html">← Back to Dashboard</a>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1>📝 Script Generator</h1>
+                <div class="tagline">Powered by Vantage</div>
+            </div>
+            
+            <!-- Form Section -->
+            <div class="form-section">
+                <div class="form-intro">
+                    <p><strong>Generate scripts for any occasion.</strong> Fill out the form below and we'll create a professional script tailored to your needs.</p>
+                </div>
+                
+                <form id="scriptForm">
+                    <!-- Script Length -->
+                    <div class="form-group">
+                        <label for="length">
+                            Script Length <span class="required">*</span>
+                        </label>
+                        <select id="length" name="length" required>
+                            <option value="">Select duration...</option>
+                            <option value="30s">30 seconds</option>
+                            <option value="60s">1 minute</option>
+                            <option value="90s">90 seconds</option>
+                            <option value="2min">2 minutes</option>
+                            <option value="3min">3 minutes</option>
+                            <option value="5min">5 minutes</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Tone -->
+                    <div class="form-group">
+                        <label for="tone">
+                            Tone <span class="required">*</span>
+                        </label>
+                        <select id="tone" name="tone" required>
+                            <option value="">Select tone...</option>
+                            <option value="professional">Professional</option>
+                            <option value="conversational">Conversational</option>
+                            <option value="authoritative">Authoritative</option>
+                            <option value="empathetic">Empathetic</option>
+                            <option value="urgent">Urgent</option>
+                            <option value="inspirational">Inspirational</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Client -->
+                    <div class="form-group">
+                        <label for="client">
+                            Client <span class="required">*</span>
+                        </label>
+                        <select id="client" name="client" required>
+                            <option value="">Select client...</option>
+                            <option value="AIN">AIN</option>
+                            <option value="Tech Coalition">Tech Coalition</option>
+                            <option value="Internal">Internal / Targeted Victory</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Context -->
+                    <div class="form-group">
+                        <label for="context">
+                            Context / Key Points <span class="required">*</span>
+                        </label>
+                        <textarea id="context" name="context" required placeholder="Describe what the script should cover. Include key messages, talking points, audience details, or any specific requirements..."></textarea>
+                        <div class="helper-text">
+                            The more detail you provide, the better the script will be. Include audience, purpose, key messages, etc.
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="submit-section">
+                        <button type="submit" class="btn-generate" id="generateBtn">
+                            Generate Script
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Status Message -->
+                <div id="statusMessage" class="status-message"></div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <div class="results-header">
+                    <h2>✅ Your Script</h2>
+                    <button class="btn-copy" id="copyBtn">Copy to Clipboard</button>
+                </div>
+                <div class="script-output" id="scriptOutput"></div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <strong>Vantage Script Generator</strong> • Powered by n8n automation<br>
+                <a href="index.html">← Back to Dashboard</a>
+            </div>
         </div>
     </div>
 
@@ -446,6 +619,24 @@
             // Timeout for webhook response (milliseconds)
             timeout: 60000 // 60 seconds
         };
+        
+        // ============================================================================
+        // NAVBAR FUNCTIONALITY
+        // ============================================================================
+        
+        // Dropdown toggle
+        const toolsDropdown = document.getElementById('toolsDropdown');
+        const dropdownParent = toolsDropdown.parentElement;
+        
+        toolsDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownParent.classList.toggle('open');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            dropdownParent.classList.remove('open');
+        });
         
         // ============================================================================
         // MAIN FUNCTIONALITY
