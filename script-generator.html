@@ -521,70 +521,67 @@
                 </div>
                 
                 <form id="scriptForm">
-                    <!-- Script Length -->
-                    <div class="form-group">
-                        <label for="length">
-                            Script Length <span class="required">*</span>
-                        </label>
-                        <select id="length" name="length" required>
-                            <option value="">Select duration...</option>
-                            <option value="30s">30 seconds</option>
-                            <option value="60s">1 minute</option>
-                            <option value="90s">90 seconds</option>
-                            <option value="2min">2 minutes</option>
-                            <option value="3min">3 minutes</option>
-                            <option value="5min">5 minutes</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Tone -->
-                    <div class="form-group">
-                        <label for="tone">
-                            Tone <span class="required">*</span>
-                        </label>
-                        <select id="tone" name="tone" required>
-                            <option value="">Select tone...</option>
-                            <option value="professional">Professional</option>
-                            <option value="conversational">Conversational</option>
-                            <option value="authoritative">Authoritative</option>
-                            <option value="empathetic">Empathetic</option>
-                            <option value="urgent">Urgent</option>
-                            <option value="inspirational">Inspirational</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Client -->
-                    <div class="form-group">
-                        <label for="client">
-                            Client <span class="required">*</span>
-                        </label>
-                        <select id="client" name="client" required>
-                            <option value="">Select client...</option>
-                            <option value="AIN">AIN</option>
-                            <option value="Tech Coalition">Tech Coalition</option>
-                            <option value="Internal">Internal / Targeted Victory</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Context -->
-                    <div class="form-group">
-                        <label for="context">
-                            Context / Key Points <span class="required">*</span>
-                        </label>
-                        <textarea id="context" name="context" required placeholder="Describe what the script should cover. Include key messages, talking points, audience details, or any specific requirements..."></textarea>
-                        <div class="helper-text">
-                            The more detail you provide, the better the script will be. Include audience, purpose, key messages, etc.
-                        </div>
-                    </div>
-                    
-                    <!-- Submit Button -->
-                    <div class="submit-section">
-                        <button type="submit" class="btn-generate" id="generateBtn">
-                            Generate Script
-                        </button>
-                    </div>
-                </form>
+    <!-- Client -->
+    <div class="form-group">
+        <label for="client">
+            Client <span class="required">*</span>
+        </label>
+        <select id="client" name="client" required>
+            <option value="">Select client...</option>
+            <option value="AFP Action">AFP Action</option>
+        </select>
+    </div>
+    
+    <!-- Candidate -->
+    <div class="form-group">
+        <label for="candidate">
+            Candidate <span class="required">*</span>
+        </label>
+        <input type="text" id="candidate" name="candidate" required placeholder="Bernie Moreno">
+    </div>
+    
+    <!-- Office -->
+    <div class="form-group">
+        <label for="office">
+            Office <span class="required">*</span>
+        </label>
+        <select id="office" name="office" required>
+            <option value="">Select office...</option>
+            <option value="Senate">Senate</option>
+            <option value="House">House</option>
+        </select>
+    </div>
+    
+    <!-- Script Length -->
+    <div class="form-group">
+        <label for="length">
+            Script Length <span class="required">*</span>
+        </label>
+        <select id="length" name="length" required>
+            <option value="">Select duration...</option>
+            <option value="30s">30 seconds</option>
+            <option value="60s">60 seconds</option>
+        </select>
+    </div>
+    
+    <!-- Context -->
+    <div class="form-group">
+        <label for="context">
+            Context / Key Points <span class="required">*</span>
+        </label>
+        <textarea id="context" name="context" required placeholder="Describe what the script should cover. Include key messages, issues to address, candidate background, or any specific requirements..."></textarea>
+        <div class="helper-text">
+            The more detail you provide, the better the script will be. Include issues, audience, key messages, etc.
+        </div>
+    </div>
+    
+    <!-- Submit Button -->
+    <div class="submit-section">
+        <button type="submit" class="btn-generate" id="generateBtn">
+            Generate Script
+        </button>
+    </div>
+</form>
                 
                 <!-- Status Message -->
                 <div id="statusMessage" class="status-message"></div>
