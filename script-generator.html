@@ -656,14 +656,15 @@
                 return;
             }
             
-            // Collect form data
-            const formData = {
-                length: document.getElementById('length').value,
-                tone: document.getElementById('tone').value,
-                client: document.getElementById('client').value,
-                context: document.getElementById('context').value,
-                timestamp: new Date().toISOString()
-            };
+// Collect form data
+const formData = {
+    client: document.getElementById('client').value,
+    candidate: document.getElementById('candidate').value,
+    office: document.getElementById('office').value,
+    length: document.getElementById('length').value,
+    context: document.getElementById('context').value,
+    timestamp: new Date().toISOString()
+};
             
             // Show loading state
             setLoadingState(true);
