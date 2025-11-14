@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Council - Vantage Tools</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            min-height: 100vh;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            padding: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 0;
+            text-decoration: none;
+            color: #fff;
+        }
+        
+        .nav-brand-text {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-brand-subtitle {
+            font-size: 12px;
+            color: #e74c3c;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            position: relative;
+        }
+        
+        .nav-links a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 20px 20px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+            color: #e74c3c;
+        }
+        
+        .nav-links a.active {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border-bottom: 2px solid #e74c3c;
+        }
+        
+        /* Dropdown */
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .dropdown-toggle::after {
+            content: '▼';
+            font-size: 10px;
+            transition: transform 0.2s ease;
+        }
+        
+        .dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #2c2c2c;
+            min-width: 220px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-top: 2px solid #e74c3c;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu a {
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 13px;
+        }
+        
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-menu a:hover {
+            background: rgba(231, 76, 60, 0.2);
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #c8202f 0%, #a01825 100%);
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(200, 32, 47, 0.3);
+        }
+        
+        .page-header h1 {
+            color: #fff;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .page-header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+        }
+        
+        /* Controls section */
+        .controls {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .controls-row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        
+        .controls-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .control-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .mode-toggle {
+            display: flex;
+            background: #f5f5f5;
+            border-radius: 6px;
+            padding: 4px;
+        }
+        
+        .mode-btn {
+            padding: 8px 20px;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-size: 13px;
+        }
+        
+        .mode-btn.active {
+            background: #c8202f;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(200, 32, 47, 0.3);
+        }
+        
+        .system-prompt {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .system-prompt textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        .system-prompt textarea:focus {
+            outline: none;
+            border-color: #c8202f;
+            box-shadow: 0 0 0 3px rgba(200, 32, 47, 0.1);
+        }
+        
+        /* Input section */
+        .input-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .input-field {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #c8202f;
+            box-shadow: 0 0 0 3px rgba(200, 32, 47, 0.1);
+        }
+        
+        .send-btn {
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #c8202f 0%, #a01825 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(200, 32, 47, 0.3);
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(200, 32, 47, 0.4);
+        }
+        
+        .send-btn:active {
+            transform: translateY(0);
+        }
+        
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* History controls */
+        .history-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .history-btn {
+            padding: 10px 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .history-btn:hover {
+            border-color: #c8202f;
+            color: #c8202f;
+        }
+        
+        /* Response grid */
+        .response-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .response-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .response-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f5f5f5;
+        }
+        
+        .response-header.claude {
+            background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom-color: #c8202f;
+        }
+        
+        .response-header.chatgpt {
+            background: linear-gradient(to right, #f0fdf4 0%, #dcfce7 100%);
+            border-bottom-color: #10b981;
+        }
+        
+        .response-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .response-title.claude {
+            color: #c8202f;
+        }
+        
+        .response-title.chatgpt {
+            color: #10b981;
+        }
+        
+        .response-meta {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .copy-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .response-content {
+            padding: 20px;
+            min-height: 200px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .response-content.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-style: italic;
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #666;
+        }
+        
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+        
+        .error {
+            padding: 16px;
+            background: #fee;
+            border-left: 4px solid #e74c3c;
+            border-radius: 4px;
+            color: #c33;
+            font-size: 14px;
+        }
+        
+        /* Markdown styling */
+        .response-content h1,
+        .response-content h2,
+        .response-content h3 {
+            margin-top: 20px;
+            margin-bottom: 12px;
+            color: #1c1c1c;
+        }
+        
+        .response-content h1 {
+            font-size: 24px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+        
+        .response-content h2 {
+            font-size: 20px;
+        }
+        
+        .response-content h3 {
+            font-size: 16px;
+        }
+        
+        .response-content p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .response-content ul,
+        .response-content ol {
+            margin-bottom: 12px;
+            padding-left: 24px;
+        }
+        
+        .response-content li {
+            margin-bottom: 6px;
+        }
+        
+        .response-content code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        
+        .response-content pre {
+            background: #2c2c2c;
+            color: #f8f8f8;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 12px;
+        }
+        
+        .response-content pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .response-content blockquote {
+            border-left: 4px solid #c8202f;
+            padding-left: 16px;
+            margin: 16px 0;
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* History section */
+        .history-section {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .history-section h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #1c1c1c;
+        }
+        
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .history-item:hover {
+            background: #f9f9f9;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-query {
+            font-weight: 600;
+            color: #1c1c1c;
+            margin-bottom: 4px;
+        }
+        
+        .history-timestamp {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .response-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .controls-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .system-prompt {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .page-header h1 {
+                font-size: 24px;
+            }
+            
+            .input-wrapper {
+                flex-direction: column;
+            }
+            
+            .send-btn {
+                width: 100%;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+                color: #e0e0e0;
+            }
+            
+            .controls,
+            .input-section,
+            .response-card,
+            .history-section {
+                background: #2c2c2c;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            }
+            
+            .input-field,
+            .system-prompt textarea {
+                background: #1a1a1a;
+                border-color: #444;
+                color: #e0e0e0;
+            }
+            
+            .mode-toggle {
+                background: #1a1a1a;
+            }
+            
+            .response-header {
+                border-bottom-color: #444;
+            }
+            
+            .response-content h1,
+            .response-content h2,
+            .response-content h3,
+            .history-query {
+                color: #e0e0e0;
+            }
+            
+            .response-content code {
+                background: #1a1a1a;
+            }
+            
+            .history-item {
+                border-bottom-color: #444;
+            }
+            
+            .history-item:hover {
+                background: #333;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div>
+                    <div class="nav-brand-text">Vantage</div>
+                    <div class="nav-brand-subtitle">▸▸ Tools</div>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle active">Tools</a>
+                    <div class="dropdown-menu">
+                        <a href="script-generator.html">Script Generator</a>
+                        <a href="report-curation.html">Report Curation</a>
+                        <a href="ai-council.html" class="active">AI Council</a>
+                    </div>
+                </li>
+                <li><a href="https://github.com/realmreynolds/vantage-tools" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1>
+                <span>🧠</span>
+                AI Council
+            </h1>
+            <p>Query Claude and ChatGPT simultaneously for comparative analysis</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="controls-row">
+                <div class="control-group">
+                    <label>Mode</label>
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" data-mode="speed">⚡ Speed</button>
+                        <button class="mode-btn" data-mode="power">🚀 Power</button>
+                    </div>
+                </div>
+                
+                <div class="control-group system-prompt">
+                    <label>System Prompt (Optional)</label>
+                    <textarea id="systemPrompt" placeholder="Enter custom system instructions for both models..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="queryInput" 
+                    class="input-field" 
+                    placeholder="Ask both AIs a question..."
+                    autocomplete="off"
+                >
+                <button id="sendBtn" class="send-btn">Send Query</button>
+            </div>
+        </div>
+
+        <!-- History Controls -->
+        <div class="history-controls">
+            <button class="history-btn" id="clearHistoryBtn">🗑️ Clear History</button>
+            <button class="history-btn" id="exportHistoryBtn">📥 Export Chat</button>
+            <button class="history-btn" id="newConversationBtn">➕ New Conversation</button>
+        </div>
+
+        <!-- Response Grid -->
+        <div class="response-grid">
+            <!-- Claude Response -->
+            <div class="response-card">
+                <div class="response-header claude">
+                    <div class="response-title claude">
+                        <span>🟣</span>
+                        <span>Claude</span>
+                        <span class="response-meta" id="claudeMeta"></span>
+                    </div>
+                    <button class="copy-btn" id="copyClaude">Copy</button>
+                </div>
+                <div class="response-content empty" id="claudeResponse">
+                    Waiting for query...
+                </div>
+            </div>
+
+            <!-- ChatGPT Response -->
+            <div class="response-card">
+                <div class="response-header chatgpt">
+                    <div class="response-title chatgpt">
+                        <span>🟢</span>
+                        <span>ChatGPT (Dale)</span>
+                        <span class="response-meta" id="chatgptMeta"></span>
+                    </div>
+                    <button class="copy-btn" id="copyChatGPT">Copy</button>
+                </div>
+                <div class="response-content empty" id="chatgptResponse">
+                    Waiting for query...
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversation History -->
+        <div class="history-section">
+            <h2>📜 Conversation History (Last 10 Messages)</h2>
+            <div id="historyList">
+                <div style="color: #999; font-style: italic; padding: 20px; text-align: center;">
+                    No conversation history yet. Start by asking a question!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // CONFIGURATION
+        // ============================================================================
+        
+        const CONFIG = {
+            webhookUrl: 'https://targeted-victory.app.n8n.cloud/webhook/ai-council',
+            vantageKey: 'your-secret-key-here', // Change this!
+            maxHistoryLength: 10,
+            storageKey: 'vantage-ai-council-history'
+        };
+
+        // ============================================================================
+        // STATE MANAGEMENT
+        // ============================================================================
+        
+        let conversationHistory = [];
+        let currentMode = 'speed';
+        
+        // Load history from localStorage
+        function loadHistory() {
+            try {
+                const stored = localStorage.getItem(CONFIG.storageKey);
+                if (stored) {
+                    conversationHistory = JSON.parse(stored);
+                    renderHistory();
+                }
+            } catch (error) {
+                console.error('Failed to load history:', error);
+            }
+        }
+        
+        // Save history to localStorage
+        function saveHistory() {
+            try {
+                localStorage.setItem(CONFIG.storageKey, JSON.stringify(conversationHistory));
+            } catch (error) {
+                console.error('Failed to save history:', error);
+            }
+        }
+        
+        // Add to history (maintain sliding window)
+        function addToHistory(query, claudeResponse, chatgptResponse, mode, systemPrompt) {
+            const entry = {
+                timestamp: new Date().toISOString(),
+                query,
+                mode,
+                systemPrompt,
+                responses: {
+                    claude: claudeResponse,
+                    chatgpt: chatgptResponse
+                }
+            };
+            
+            conversationHistory.push(entry);
+            
+            // Keep only last 10 messages
+            if (conversationHistory.length > CONFIG.maxHistoryLength) {
+                conversationHistory = conversationHistory.slice(-CONFIG.maxHistoryLength);
+            }
+            
+            saveHistory();
+            renderHistory();
+        }
+        
+        // ============================================================================
+        // UI ELEMENTS
+        // ============================================================================
+        
+        const elements = {
+            queryInput: document.getElementById('queryInput'),
+            sendBtn: document.getElementById('sendBtn'),
+            systemPrompt: document.getElementById('systemPrompt'),
+            claudeResponse: document.getElementById('claudeResponse'),
+            chatgptResponse: document.getElementById('chatgptResponse'),
+            claudeMeta: document.getElementById('claudeMeta'),
+            chatgptMeta: document.getElementById('chatgptMeta'),
+            copyClaude: document.getElementById('copyClaude'),
+            copyChatGPT: document.getElementById('copyChatGPT'),
+            clearHistoryBtn: document.getElementById('clearHistoryBtn'),
+            exportHistoryBtn: document.getElementById('exportHistoryBtn'),
+            newConversationBtn: document.getElementById('newConversationBtn'),
+            historyList: document.getElementById('historyList'),
+            modeBtns: document.querySelectorAll('.mode-btn')
+        };
+        
+        // ============================================================================
+        // MODE TOGGLE
+        // ============================================================================
+        
+        elements.modeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                elements.modeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMode = btn.dataset.mode;
+            });
+        });
+        
+        // ============================================================================
+        // SEND QUERY
+        // ============================================================================
+        
+        async function sendQuery() {
+            const query = elements.queryInput.value.trim();
+            
+            if (!query) {
+                alert('Please enter a question');
+                return;
+            }
+            
+            const systemPrompt = elements.systemPrompt.value.trim();
+            
+            // Disable input
+            elements.sendBtn.disabled = true;
+            elements.sendBtn.textContent = 'Sending...';
+            elements.queryInput.disabled = true;
+            
+            // Show loading state
+            elements.claudeResponse.innerHTML = '<div class="loading">Querying Claude</div>';
+            elements.claudeResponse.classList.remove('empty');
+            elements.chatgptResponse.innerHTML = '<div class="loading">Querying ChatGPT</div>';
+            elements.chatgptResponse.classList.remove('empty');
+            elements.claudeMeta.textContent = '';
+            elements.chatgptMeta.textContent = '';
+            
+            try {
+                // Build conversation context from *PAST* history only.
+                // This is cleaner and easier for n8n to parse.
+                const historyForPayload = conversationHistory.map(entry => ({
+                    role_user_query: entry.query,
+                    claude_response: entry.responses.claude.content,
+                    chatgpt_response: entry.responses.chatgpt.content
+                })).slice(-CONFIG.maxHistoryLength); // Last 10 exchanges
+                
+                // The payload is now much cleaner and more explicit
+                const payload = {
+                    new_query: query,        // The brand-new question
+                    mode: currentMode,       // Speed or Power
+                    system_prompt: systemPrompt || null,
+                    history: historyForPayload  // *Only* past messages
+                };
+                
+                const response = await fetch(CONFIG.webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Vantage-Key': CONFIG.vantageKey
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                // Render responses
+                renderClaudeResponse(data.claudeResponse);
+                renderChatGPTResponse(data.chatgptResponse);
+                
+                // Add to history
+                addToHistory(query, data.claudeResponse, data.chatgptResponse, currentMode, systemPrompt);
+                
+                // Clear input
+                elements.queryInput.value = '';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                
+                elements.claudeResponse.innerHTML = `<div class="error">
+                    <strong>Error:</strong> ${error.message}
+                </div>`;
+                
+                elements.chatgptResponse.innerHTML = `<div class="error">
+                    <strong>Error:</strong> ${error.message}
+                </div>`;
+            } finally {
+                // Re-enable input
+                elements.sendBtn.disabled = false;
+                elements.sendBtn.textContent = 'Send Query';
+                elements.queryInput.disabled = false;
+                elements.queryInput.focus();
+            }
+        }
+        
+        // ============================================================================
+        // RENDER RESPONSES
+        // ============================================================================
+        
+        function renderClaudeResponse(response) {
+            if (response.error) {
+                elements.claudeResponse.innerHTML = `<div class="error">
+                    <strong>Error:</strong> ${response.error}
+                </div>`;
+                elements.claudeMeta.textContent = '';
+                return;
+            }
+            
+            elements.claudeResponse.innerHTML = markdownToHtml(response.content);
+            elements.claudeResponse.classList.remove('empty');
+            
+            // Show metadata
+            const model = response.model || 'Unknown';
+            const tokens = response.usage ? `${response.usage.input_tokens + response.usage.output_tokens} tokens` : '';
+            elements.claudeMeta.textContent = `${model} ${tokens}`;
+        }
+        
+        function renderChatGPTResponse(response) {
+            if (response.error) {
+                elements.chatgptResponse.innerHTML = `<div class="error">
+                    <strong>Error:</strong> ${response.error}
+                </div>`;
+                elements.chatgptMeta.textContent = '';
+                return;
+            }
+            
+            elements.chatgptResponse.innerHTML = markdownToHtml(response.content);
+            elements.chatgptResponse.classList.remove('empty');
+            
+            // Show metadata
+            const model = response.model || 'Unknown';
+            const tokens = response.usage ? `${response.usage.total_tokens} tokens` : '';
+            elements.chatgptMeta.textContent = `${model} ${tokens}`;
+        }
+        
+        // ============================================================================
+        // MARKDOWN PARSER (Robust)
+        // ============================================================================
+        
+        function markdownToHtml(markdown) {
+            if (!markdown) return '';
+            
+            // Use the 'marked' library
+            // 'sanitize: true' prevents any XSS/script injection from the AI response
+            return marked.parse(markdown, { sanitize: true });
+        }
+        
+        // ============================================================================
+        // COPY FUNCTIONALITY (Non-Blocking UX)
+        // ============================================================================
+        
+        function copyToClipboard(text, buttonElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Provide non-blocking feedback
+                const originalText = buttonElement.textContent;
+                buttonElement.textContent = '✓ Copied!';
+                buttonElement.disabled = true;
+                
+                setTimeout(() => {
+                    buttonElement.textContent = originalText;
+                    buttonElement.disabled = false;
+                }, 2000); // Revert after 2 seconds
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                buttonElement.textContent = '✗ Error';
+                setTimeout(() => {
+                    buttonElement.textContent = 'Copy';
+                    buttonElement.disabled = false;
+                }, 2000);
+            });
+        }
+        
+        elements.copyClaude.addEventListener('click', () => {
+            copyToClipboard(elements.claudeResponse.textContent, elements.copyClaude);
+        });
+        
+        elements.copyChatGPT.addEventListener('click', () => {
+            copyToClipboard(elements.chatgptResponse.textContent, elements.copyChatGPT);
+        });
+        
+        // ============================================================================
+        // HISTORY MANAGEMENT
+        // ============================================================================
+        
+        function renderHistory() {
+            if (conversationHistory.length === 0) {
+                elements.historyList.innerHTML = `
+                    <div style="color: #999; font-style: italic; padding: 20px; text-align: center;">
+                        No conversation history yet. Start by asking a question!
+                    </div>
+                `;
+                return;
+            }
+            
+            const historyHtml = conversationHistory
+                .slice()
+                .reverse()
+                .map((entry, index) => {
+                    const actualIndex = conversationHistory.length - 1 - index;
+                    const timestamp = new Date(entry.timestamp).toLocaleString();
+                    const truncatedQuery = entry.query.length > 80 
+                        ? entry.query.substring(0, 80) + '...' 
+                        : entry.query;
+                    
+                    return `
+                        <div class="history-item" data-index="${actualIndex}">
+                            <div class="history-query">${truncatedQuery}</div>
+                            <div class="history-timestamp">
+                                ${timestamp} · ${entry.mode === 'speed' ? '⚡ Speed' : '🚀 Power'}
+                            </div>
+                        </div>
+                    `;
+                })
+                .join('');
+            
+            elements.historyList.innerHTML = historyHtml;
+            
+            // Add click handlers
+            document.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const index = parseInt(item.dataset.index);
+                    loadHistoryItem(index);
+                });
+            });
+        }
+        
+        function loadHistoryItem(index) {
+            const entry = conversationHistory[index];
+            if (!entry) return;
+            
+            // Populate query
+            elements.queryInput.value = entry.query;
+            
+            // Set mode
+            currentMode = entry.mode;
+            elements.modeBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === currentMode);
+            });
+            
+            // Set system prompt
+            elements.systemPrompt.value = entry.systemPrompt || '';
+            
+            // Show responses
+            renderClaudeResponse(entry.responses.claude);
+            renderChatGPTResponse(entry.responses.chatgpt);
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        elements.clearHistoryBtn.addEventListener('click', () => {
+            if (confirm('Clear all conversation history? This cannot be undone.')) {
+                conversationHistory = [];
+                saveHistory();
+                renderHistory();
+                
+                // Reset responses
+                elements.claudeResponse.innerHTML = 'Waiting for query...';
+                elements.claudeResponse.classList.add('empty');
+                elements.chatgptResponse.innerHTML = 'Waiting for query...';
+                elements.chatgptResponse.classList.add('empty');
+                elements.claudeMeta.textContent = '';
+                elements.chatgptMeta.textContent = '';
+            }
+        });
+        
+        elements.newConversationBtn.addEventListener('click', () => {
+            if (confirm('Start a new conversation? Current context will be cleared but history will be saved.')) {
+                // Clear inputs
+                elements.queryInput.value = '';
+                elements.systemPrompt.value = '';
+                
+                // Reset responses
+                elements.claudeResponse.innerHTML = 'Waiting for query...';
+                elements.claudeResponse.classList.add('empty');
+                elements.chatgptResponse.innerHTML = 'Waiting for query...';
+                elements.chatgptResponse.classList.add('empty');
+                elements.claudeMeta.textContent = '';
+                elements.chatgptMeta.textContent = '';
+                
+                // Note: We keep conversationHistory intact, just clear the UI
+                // The sliding window will naturally phase out old messages
+            }
+        });
+        
+        elements.exportHistoryBtn.addEventListener('click', () => {
+            if (conversationHistory.length === 0) {
+                alert('No conversation history to export');
+                return;
+            }
+            
+            const exportData = {
+                exportDate: new Date().toISOString(),
+                totalConversations: conversationHistory.length,
+                conversations: conversationHistory
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `vantage-ai-council-history-${Date.now()}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        });
+        
+        // ============================================================================
+        // EVENT LISTENERS
+        // ============================================================================
+        
+        elements.sendBtn.addEventListener('click', sendQuery);
+        
+        elements.queryInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendQuery();
+            }
+        });
+        
+        // ============================================================================
+        // INITIALIZATION
+        // ============================================================================
+        
+        // Load history on page load
+        loadHistory();
+        
+        // Focus input
+        elements.queryInput.focus();
+        
+        console.log('🧠 AI Council initialized');
+        console.log(`Mode: ${currentMode}`);
+        console.log(`History entries: ${conversationHistory.length}`);
+    </script>
+</body>
+</html>
